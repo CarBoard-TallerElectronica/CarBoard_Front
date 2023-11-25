@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "frontcarboard",
-    "slug": "frontcarboard",
+    "name": "CarBoard",
+    "slug": "CarBoard",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/onlylogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/onlylogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/onlylogo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/onlylogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "edb50933-9c35-454d-989d-74fdc460a24c"
+      }
+    },
+    "owner": "marialemor"
   }
 }
