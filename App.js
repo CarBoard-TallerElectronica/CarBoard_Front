@@ -43,6 +43,7 @@ function Init({ navigation }) {
 
         if (response.ok) {
           console.log('WiFi info sent successfully');
+          navigation.navigate('LogIn');
         } else {
           console.error('Failed to send WiFi info');
         }
@@ -88,28 +89,6 @@ function Init({ navigation }) {
     </View>
   );
 }
-
-const  connectToESP32 = (navigation) => {
-  //GET request
-  fetchWithTimeout(ESP32IP, {
-    method: 'GET',
-    timeout:1000
-  })
-  .then((response) => {  
-    //Success
-      if (response.ok){
-      alert('¡Conexión exitosa!');
-      }
-      console.log(response.status);
-      navigation.navigate('Main');
-  })
-  //If response is not in json then in error
-  .catch((error) => {
-    //Error
-    alert('No se ha podido conectar al dispositivo.');
-    console.error(error);
-  });
-};
 
 function LogIn({ navigation }) {
   const [usuario, setUsuario] = useState('');
@@ -196,6 +175,9 @@ function Principal({ navigation }) {
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getLocation = async () => {
@@ -219,6 +201,34 @@ function Principal({ navigation }) {
     getLocation();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(dir);
+
+        if (!response.ok) {
+          throw new Error('La respuesta no es exitosa');
+        }
+        const result = await response.json();
+        setData(result);
+        setLoading(false);
+      } catch (error) {
+        // Handle errors
+        setError(error);
+        setLoading(false);
+      }
+    };
+      fetchData();
+    }, []); 
+
+    if (loading) {
+      return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+      return <Text>Error: {error.message}</Text>;
+    }
+
   return (
     <View style={{ flex: 1, justifyContent: 'right', alignItems: 'right' }}>
       {initialRegion && (
@@ -237,6 +247,10 @@ function Principal({ navigation }) {
       <Pressable style={styles.button} onPress={() => navigation.goBack()}>
       <Text style={styles.buttonLabel}> Volver </Text>
       </Pressable>
+
+      <View style = {styles.InputContainer}>
+        
+      </View>
     </View>
   );
 }
@@ -269,11 +283,10 @@ function MyStack() {
       gestureEnabled: true,
       gestureDirection:'horizontal',
       transitionSpec:{
-        open:closeConfig,
+        open:config,
         close:closeConfig,
       }
     }}
-    headerMode="float"
     animation="fade">
       <Stack.Screen
         name="Init"
