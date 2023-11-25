@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "CarBoard",
+    "slug": "CarBoard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/onlylogo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/onlylogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/onlylogo.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/onlylogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "edb50933-9c35-454d-989d-74fdc460a24c"
+      }
+    },
+    "owner": "marialemor"
+  }
+}
