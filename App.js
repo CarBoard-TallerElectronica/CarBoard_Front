@@ -33,10 +33,10 @@ function Init({ navigation }) {
     // Validate WiFi info if needed
     if (ssid && password) {
       try {
-        const response = await fetch('http://localhost:3001/wifi-info', {
+        const response = await fetch('http://192.168.1.1/wifi-info', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ ssid, password }),
         });
@@ -378,12 +378,15 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 60,
     paddingHorizontal: 8,
+    width: "100%",
     paddingVertical: 8,
   },
   buttonLabel: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+    textAlign: 'center',
+    
   },
   map: {
     width:'100%',
