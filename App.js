@@ -250,6 +250,7 @@ function Principal({ navigation }) {
       </Pressable>
 
       <View style = {styles.InputContainer}>
+        <Text style = {styles.description}> {data}</Text>
         
       </View>
     </View>
@@ -290,13 +291,13 @@ function MyStack() {
     }}
     animation="fade">
       <Stack.Screen
-        name="LogIn"
-        component={LogIn}
+        name="Init"
+        component={Init}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Init"
-        component={Init}
+        name="LogIn"
+        component={LogIn}
         options={{headerShown: false}}
       />
       <Stack.Screen
