@@ -14,7 +14,7 @@ export let ESP32IP = 'http://192.168.1.1';
 
 const PlaceholderImage = require('./assets/carboard.png');
 
-const dir = 'http://34.41.130.6:8081/nodos/reg/'
+const dir = 'http://carboard.lat/nodos/reg/'
 
 function Init({ navigation }) {
   const [ssid, setSSID] = useState('');
