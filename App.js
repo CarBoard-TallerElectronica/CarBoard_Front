@@ -160,7 +160,8 @@ function LogIn({ navigation }) {
       />
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={{flexDirection: 'row', flexWrap: 'wrap',justifyContent: 'center',alignItems: 'center', width: '100%',position: 'relative', 
+      top: 30, }}>
         <Pressable style={styles.button} onPress={signUp}>
         <Text style={styles.buttonLabel}>Registrarse</Text>
         </Pressable>
@@ -289,13 +290,13 @@ function MyStack() {
     }}
     animation="fade">
       <Stack.Screen
-        name="Init"
-        component={Init}
+        name="LogIn"
+        component={LogIn}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="LogIn"
-        component={LogIn}
+        name="Init"
+        component={Init}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -319,10 +320,10 @@ const styles = StyleSheet.create({
   textinput:{
     height: 55,
     borderColor: 'black',
-    borderWidth: 3,
+    borderWidth: 2.5,
     borderRadius: 20,
     alignContent: 'center',
-    width:"150%",
+    width:"170%",
     alignSelf: 'center',
     paddingBottom:10,
   },
@@ -331,7 +332,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f8ff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 100,
+    padding: 95,
     borderTopLeftRadius:40,
     borderTopRightRadius:40,
     width: '100%',
@@ -348,7 +349,7 @@ const styles = StyleSheet.create({
   },
   titles: {
     fontSize: 45,
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     paddingVertical: 12,
     alignSelf: 'center',
@@ -371,6 +372,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    position: 'relative',
+    top: -150, 
+
   },
   button: {
     backgroundColor: 'black',
