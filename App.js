@@ -14,10 +14,14 @@ export let ESP32IP = 'http://192.168.1.1';
 
 const PlaceholderImage = require('./assets/carboard.png');
 
-const dir = 'http://carboard.lat/nodos/reg/'
-const dirfetch = 'http://carboard.lat/measurements/nodo/'
+const dir = 'https://carboard.lat/nodos/reg/'
+const dirfetch = 'https://carboard.lat/measurement/nodo/30/latest'
+
+
 
 function Init({ navigation }) {
+
+  
   const [ssid, setSSID] = useState('');
   const [password, setPassword] = useState('');
   const [isDialogVisible, setDialogVisible] = useState(false);
@@ -44,7 +48,6 @@ function Init({ navigation }) {
 
         if (response.ok) {
           console.log('WiFi info sent successfully');
-          navigation.navigate('LogIn');
         } else {
           console.error('Failed to send WiFi info');
         }
@@ -65,8 +68,12 @@ function Init({ navigation }) {
         <ImageViewer placeholderImageSource={PlaceholderImage} />
       </View>
       <View style={styles.buttonContainer}>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('LogIn')}>
+        <Text style={styles.buttonLabel}>Ingresar</Text>
+        </Pressable>
+
         <Pressable style={styles.button} onPress={setwifi}>
-        <Text style={styles.buttonLabel}>Conectar dispositivo</Text>
+        <Text style={styles.buttonLabel}>Configurar</Text>
         </Pressable>
 
           <Dialog.Container visible = {isDialogVisible}>
@@ -92,10 +99,12 @@ function Init({ navigation }) {
 }
 
 function LogIn({ navigation }) {
+
   const [usuario, setUsuario] = useState('');
   const [modelo, setModelo] = useState('');
   const [anio, setAnio] = useState('');
   const [responseText, setResponseText] = useState(null);
+
 
   const signUp = async () => {
     try {
@@ -105,9 +114,9 @@ function LogIn({ navigation }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          usuario,
-          modelo,
-          anio,
+          usuario:usuario,
+          modelo: modelo,
+          anio: anio,
         }),
       });
 
@@ -127,7 +136,7 @@ function LogIn({ navigation }) {
     <SafeAreaView style = {{flex:1,  backgroundColor:'black'}}>
     <View style = {{paddingBottom:100}}>
     <Text style = {styles.titles}>
-      Crea tu Usuario!
+      Crea tu Usuario
     </Text>
     </View>
     <View style = {styles.InputContainer}>
@@ -135,7 +144,7 @@ function LogIn({ navigation }) {
         Usuario
       </Text>
       <View style = {styles.textinput}>
-      <TextInput
+      <TextInput style = {styles.textBox}
         value={usuario}
         onChangeText={(text) => setUsuario(text)}
       />
@@ -145,7 +154,7 @@ function LogIn({ navigation }) {
         Modelo del vehículo
       </Text>
       <View style = {styles.textinput}>
-      <TextInput
+      <TextInput style = {styles.textBox}
         value={modelo}
         onChangeText={(text) => setModelo(text)}
       />
@@ -155,7 +164,7 @@ function LogIn({ navigation }) {
         Año del Vehículo
       </Text>
       <View style = {styles.textinput}>
-      <TextInput
+      <TextInput style = {styles.textBox}
         value={anio}
         onChangeText={(text) => setAnio(text)}
       />
@@ -175,44 +184,26 @@ function LogIn({ navigation }) {
 
 function Principal({ navigation }) {
 
-  const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permiso de localización Denegado");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation(location.coords);
-
-      setInitialRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    };
-
-    getLocation();
-  }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(dirfetch);
-
+  
         if (!response.ok) {
           throw new Error('La respuesta no es exitosa');
         }
         const result = await response.json();
-        setData(result);
+        setData(result[0]['fields']);
+        setInitialRegion({
+          latitude: result[0]['fields']['latitud'] * 10e-8,
+          longitude: result[0]['fields']['longitud'] * 10e-8,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        });
         setLoading(false);
       } catch (error) {
         // Handle errors
@@ -220,8 +211,14 @@ function Principal({ navigation }) {
         setLoading(false);
       }
     };
+  
+    const interval = setInterval(() => {
       fetchData();
-    }, []); 
+    }, 4000); // 4 seconds
+  
+    // Cleanup function to clear interval when component unmounts or useEffect runs again
+    return () => clearInterval(interval);
+  }, []); 
 
     if (loading) {
       return <Text>Loading...</Text>;
@@ -233,25 +230,24 @@ function Principal({ navigation }) {
 
   return (
     <View style={{ flex: 1, justifyContent: 'right', alignItems: 'right' }}>
-      {initialRegion && (
-        <MapView style={styles.map} initialRegion={initialRegion}>
-          {currentLocation && (
-            <Marker
-              coordinate={{
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
-              }}
-              title="Posición actual"
-            />
-          )}
-        </MapView>
-      )}
+  
+      <MapView style={styles.map} initialRegion={initialRegion}>
+        
+          <Marker
+            coordinate={{
+              latitude: data['latitud'] * 10e-8,
+              longitude:  data['longitud'] * 10e-8,
+            }}
+            title="Posición actual"
+          />
+      </MapView>
+
       <Pressable style={styles.button} onPress={() => navigation.goBack()}>
       <Text style={styles.buttonLabel}> Volver </Text>
       </Pressable>
 
       <View style = {styles.InputContainer}>
-        <Text style = {styles.description}> {data}</Text>
+        <Text style = {styles.description}> a</Text>
       </View>
     </View>
   );
@@ -328,11 +324,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingBottom:10,
   },
+  textBox:{
+    width: '100%', alignSelf: 'center', textAlign: 'center', fontSize: 20, color: 'black', height:"100%"
+  },
   InputContainer: {
     flex: 2,
     backgroundColor: '#f8f8ff',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 10,
     padding: 95,
     borderTopLeftRadius:40,
     borderTopRightRadius:40,

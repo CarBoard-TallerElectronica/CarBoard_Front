@@ -27,10 +27,8 @@
       "favicon": "./assets/onlylogo.png"
     },
     "extra": {
-      "eas": {
-        "projectId": "edb50933-9c35-454d-989d-74fdc460a24c"
-      }
+
     },
-    "owner": "marialemor"
+
   }
 }
