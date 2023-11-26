@@ -15,6 +15,7 @@ export let ESP32IP = 'http://192.168.1.1';
 const PlaceholderImage = require('./assets/carboard.png');
 
 const dir = 'http://carboard.lat/nodos/reg/'
+const dirfetch = 'http://carboard.lat/measurements/nodo/'
 
 function Init({ navigation }) {
   const [ssid, setSSID] = useState('');
@@ -205,7 +206,7 @@ function Principal({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(dir);
+        const response = await fetch(dirfetch);
 
         if (!response.ok) {
           throw new Error('La respuesta no es exitosa');
@@ -251,7 +252,6 @@ function Principal({ navigation }) {
 
       <View style = {styles.InputContainer}>
         <Text style = {styles.description}> {data}</Text>
-        
       </View>
     </View>
   );
