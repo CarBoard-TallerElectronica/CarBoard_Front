@@ -280,11 +280,6 @@ function MyStack() {
       gestureDirection:'horizontal',
     }}>
       <Stack.Screen
-        name="Principal"
-        component={Principal}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
         name="Init"
         component={Init}
         options={{headerShown: false}}
@@ -292,6 +287,11 @@ function MyStack() {
       <Stack.Screen
         name="LogIn"
         component={LogIn}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Principal"
+        component={Principal}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
