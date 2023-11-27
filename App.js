@@ -183,7 +183,7 @@ function LogIn({ navigation }) {
 };
 
 function Principal({ navigation }) {
-
+  /*
   const [initialRegion, setInitialRegion] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -206,7 +206,7 @@ function Principal({ navigation }) {
         });
         setLoading(false);
       } catch (error) {
-        // Handle errors
+
         setError(error);
         setLoading(false);
       }
@@ -216,7 +216,6 @@ function Principal({ navigation }) {
       fetchData();
     }, 4000); // 4 seconds
   
-    // Cleanup function to clear interval when component unmounts or useEffect runs again
     return () => clearInterval(interval);
   }, []); 
 
@@ -227,51 +226,49 @@ function Principal({ navigation }) {
     if (error) {
       return <Text>Error: {error.message}</Text>;
     }
-
+    */
   return (
     <View style={{ flex: 1, justifyContent: 'right', alignItems: 'right' }}>
-  
-      <MapView style={styles.map} initialRegion={initialRegion}>
-        
-          <Marker
+
+      <View style = {{height:'73%'}}>
+      <MapView style={styles.map} initialRegion={{latitude: 4.60971,
+          longitude: -74.08175,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,}}>
+          <Marker 
             coordinate={{
-              latitude: data['latitud'] * 10e-8,
-              longitude:  data['longitud'] * 10e-8,
+              latitude: 4.60971,
+              longitude: -74.08175,
             }}
             title="Posición actual"
           />
+          
       </MapView>
-
-      <Pressable style={styles.button} onPress={() => navigation.goBack()}>
-      <Text style={styles.buttonLabel}> Volver </Text>
-      </Pressable>
+      </View>
 
       <View style = {styles.InputContainer}>
-        <Text style = {styles.description}> a</Text>
+        <View style = {{width:"180%"}}>
+          <Text style = {styles.description}> Velocidad actual: 130 km/h</Text>
+          <Text style = {styles.description}> Aceleración actual: 120 m/s^2 </Text>
+          <Text style = {styles.description}> ID del nodo: 30</Text>
+        </View>
+
+        <View style = {{flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '150%',
+            position: 'relative',
+            top: 20, }}>
+        <Pressable style={styles.button} onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonLabel}> Volver </Text>
+        </Pressable>
+        </View>
+
       </View>
     </View>
   );
 }
-
-const config = {
-  animation: "spring",
-  config: {
-    stiffness: 1000,
-    damping: 50,
-    mass: 3,
-    overshootClamping: false,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
-};
-
-const closeConfig = {
-  animation: "timing",
-  config: {
-    duration: 500,
-    easing: Easing.linear
-  }
-};
 
 const Stack = createStackNavigator();
 
@@ -280,12 +277,12 @@ function MyStack() {
     <Stack.Navigator screenOptions={{
       gestureEnabled: true,
       gestureDirection:'horizontal',
-      transitionSpec:{
-        open:config,
-        close:closeConfig,
-      }
-    }}
-    animation="fade">
+    }}>
+      <Stack.Screen
+        name="Principal"
+        component={Principal}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Init"
         component={Init}
@@ -294,11 +291,6 @@ function MyStack() {
       <Stack.Screen
         name="LogIn"
         component={LogIn}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Principal"
-        component={Principal}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
