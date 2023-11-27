@@ -1,6 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import * as Location from 'expo-location'
-import { StyleSheet, View, Pressable, Text,  TextInput, Image, Easing } from 'react-native';
+import { StyleSheet, View, Pressable, Text,  TextInput,Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ImageViewer from './components/ImageViewer';
@@ -13,6 +12,7 @@ import DialogInput from 'react-native-dialog/lib/Input';
 export let ESP32IP = 'http://192.168.1.1';
 
 const PlaceholderImage = require('./assets/carboard.png');
+const CarMarker = require('./assets/carmarker.png');
 
 const dir = 'https://carboard.lat/nodos/reg/'
 const dirfetch = 'https://carboard.lat/measurement/nodo/30/latest'
@@ -183,7 +183,7 @@ function LogIn({ navigation }) {
 };
 
 function Principal({ navigation }) {
-  /*
+
   const [initialRegion, setInitialRegion] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -201,8 +201,8 @@ function Principal({ navigation }) {
         setInitialRegion({
           latitude: result[0]['fields']['latitud'] * 10e-8,
           longitude: result[0]['fields']['longitud'] * 10e-8,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         });
         setLoading(false);
       } catch (error) {
@@ -226,40 +226,41 @@ function Principal({ navigation }) {
     if (error) {
       return <Text>Error: {error.message}</Text>;
     }
-    */
+
   return (
     <View style={{ flex: 1, justifyContent: 'right', alignItems: 'right' }}>
 
       <View style = {{height:'73%'}}>
-      <MapView style={styles.map} initialRegion={{latitude: 4.60971,
-          longitude: -74.08175,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,}}>
-          <Marker 
+      <MapView style={styles.map} initialRegion={initialRegion}>
+           <Marker
             coordinate={{
-              latitude: 4.60971,
-              longitude: -74.08175,
+              latitude: data['latitud'] * 10e-8,
+              longitude:  data['longitud'] * 10e-8,
             }}
             title="Posición actual"
-          />
-          
+          ><Image 
+          source = {CarMarker}
+          style={styles.markerImage}
+        />
+
+          </Marker>
       </MapView>
       </View>
 
       <View style = {styles.InputContainer}>
-        <View style = {{width:"180%"}}>
-          <Text style = {styles.description}> Velocidad actual: 130 km/h</Text>
-          <Text style = {styles.description}> Aceleración actual: 120 m/s^2 </Text>
-          <Text style = {styles.description}> ID del nodo: 30</Text>
+        <View style = {{width:"180%", marginTop:-40, }}>
+          <Text style = {styles.infodesc}> ID del nodo: {data["nodo"]}</Text>
+          <Text style = {styles.infodesc}> Velocidad actual: {data["velocidad"]} m/s</Text>
+          <Text style = {styles.infodesc}> Aceleración actual: {data["aceleracion"]} m/s^2 </Text>
         </View>
 
         <View style = {{flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '150%',
+            width: '180%',
             position: 'relative',
-            top: 20, }}>
+            top:20}}>
         <Pressable style={styles.button} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonLabel}> Volver </Text>
         </Pressable>
@@ -387,7 +388,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width:'100%',
-    height:'100%'
+    height:'110%'
   },
   description: {
       fontSize: 20,
@@ -396,5 +397,16 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       fontWeight: 'bold',
   },
+  infodesc: {
+    fontSize: 17,
+    color: 'black',
+    paddingTop: 20,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+},
+markerImage: {
+  width: 50,
+  height: 50
+}
 });
 
