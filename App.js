@@ -247,7 +247,7 @@ function Principal({ navigation }) {
       </MapView>
       </View>
 
-      <View style = {styles.InputContainer}>
+      <View style = {styles.InfoContainer}>
         <View style = {{width:"180%", marginTop:-40, }}>
           <Text style = {styles.infodesc}> ID del nodo: {data["nodo"]}</Text>
           <Text style = {styles.infodesc}> Velocidad actual: {data["velocidad"]} m/s</Text>
@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius:40,
     width: '100%',
     alignSelf: 'center',
+    marginTop:-1,
   },
   container: {
     flex: 1,
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     position: 'relative',
-    top: -150, 
+    top: -120, 
 
   },
   button: {
@@ -403,6 +404,18 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignSelf: 'center',
     fontWeight: 'bold',
+},
+InfoContainer: {
+  flex: 2,
+  backgroundColor: '#f8f8ff',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 10,
+  padding: 95,
+  borderTopLeftRadius:40,
+  borderTopRightRadius:40,
+  width: '100%',
+  alignSelf: 'center',
 },
 markerImage: {
   width: 50,
